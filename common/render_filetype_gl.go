@@ -9,7 +9,7 @@ import (
 
 // TextureResource is the resource used by the RenderSystem. It uses .jpg, .gif, and .png images
 type TextureResource struct {
-	Texture *gl.Texture
+	Texture *Texture
 	Width   float32
 	Height  float32
 	url     string
@@ -45,7 +45,17 @@ func UploadTexture(img Image) *gl.Texture {
 // NewTextureResource sends the image to the GPU and returns a `TextureResource` for easy access
 func NewTextureResource(img Image) TextureResource {
 	id := UploadTexture(img)
-	return TextureResource{Texture: id, Width: float32(img.Width()), Height: float32(img.Height())}
+	w := float32(img.Width())
+	h := float32(img.Height())
+	return TextureResource{Texture: &Texture{
+		ID:       id,
+		width:    w,
+		height:   h,
+		viewport: engo.AABB{Max: engo.Point{X: 1, Y: 1}, Min: engo.Point{X: 0, Y: 0}},
+	},
+		Width:  w,
+		Height: h,
+	}
 }
 
 // NewTextureSingle sends the image to the GPU and returns a `Texture` with a viewport for single-sprite images

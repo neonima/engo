@@ -5,12 +5,11 @@ import (
 
 	"github.com/EngoEngine/engo"
 	"github.com/EngoEngine/engo/math"
-	"github.com/EngoEngine/gl"
 )
 
 // Spritesheet is a class that stores a set of tiles from a file, used by tilemaps and animations
 type Spritesheet struct {
-	texture       *gl.Texture     // The original texture
+	texture       *Texture        // The original texture
 	width, height float32         // The dimensions of the total texture
 	cells         []SpriteRegion  // The dimensions of each sprite
 	cache         map[int]Texture // The cell cache cells
@@ -111,7 +110,7 @@ func (s *Spritesheet) Cell(index int) Texture {
 
 	cell := s.cells[index]
 	s.cache[index] = Texture{
-		ID:     s.texture,
+		ID:     s.texture.ID,
 		width:  float32(cell.Width),
 		height: float32(cell.Height),
 		viewport: engo.AABB{
@@ -189,27 +188,3 @@ func generateSymmetricSpriteRegions(totalWidth, totalHeight float32, cellWidth, 
 
 	return spriteRegions
 }
-
-/*
-type Sprite struct {
-	Position *Point
-	Scale    *Point
-	Anchor   *Point
-	Rotation float32
-	Color    color.Color
-	Alpha    float32
-	Region   *Region
-}
-
-func NewSprite(region *Region, x, y float32) *Sprite {
-	return &Sprite{
-		Position: &Point{x, y},
-		Scale:    &Point{1, 1},
-		Anchor:   &Point{0, 0},
-		Rotation: 0,
-		Color:    color.White,
-		Alpha:    1,
-		Region:   region,
-	}
-}
-*/

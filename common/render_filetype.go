@@ -124,7 +124,7 @@ func LoadedSprite(url string) (*Texture, error) {
 		return nil, fmt.Errorf("resource not of type `TextureResource`: %s", url)
 	}
 
-	return &Texture{img.Texture, img.Width, img.Height, engo.AABB{Max: engo.Point{X: 1.0, Y: 1.0}}}, nil
+	return &Texture{img.Texture.ID, img.Width, img.Height, engo.AABB{Max: engo.Point{X: 1.0, Y: 1.0}}}, nil
 }
 
 func init() {

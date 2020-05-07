@@ -8,7 +8,6 @@ import (
 
 	"github.com/EngoEngine/ecs"
 	"github.com/EngoEngine/engo"
-	"github.com/EngoEngine/gl"
 )
 
 const (
@@ -73,12 +72,9 @@ type RenderComponent struct {
 	// Do not set to anything other than NoRepeat for textures in a sprite sheet.
 	// This does not yet work with sprite sheets.
 	Repeat TextureRepeating
-	// Buffer represents the buffer object itself
+	// BufferData represents the buffer object itself and the buffer data.
 	// Avoid using it unless your are writing a custom shader
-	Buffer *gl.Buffer
-	// BufferContent contains the buffer data
-	// Avoid using it unless your are writing a custom shader
-	BufferContent []float32
+	BufferData BufferData
 	// StartZIndex defines the initial Z-Index. Z-Index defines the order which the content is drawn to the
 	// screen. Higher z-indices are drawn on top of lower ones. Beware that you must use `SetZIndex` function to change
 	// the Z-Index.
