@@ -1,3 +1,5 @@
+//+build !vulkan
+
 package common
 
 import (
@@ -33,8 +35,8 @@ func (bm Blendmap) Height() float32 {
 }
 
 // Texture returns the OpenGL ID of the blendmap.
-func (bm Blendmap) Texture() *gl.Texture {
-	return bm.Map.id
+func (bm Blendmap) Texture() *Texture {
+	return bm.Map
 }
 
 // View returns the viewport properties of the Texture. The order is Min.X, Min.Y, Max.X, Max.Y.
@@ -262,22 +264,22 @@ func (s *blendmapShader) ShouldDraw(rc *RenderComponent, sc *SpaceComponent) boo
 
 func (s *blendmapShader) bindTexturePack(tp *TexturePack) {
 	engo.Gl.ActiveTexture(engo.Gl.TEXTURE1)
-	engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, tp.Fallback.Texture())
+	engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, tp.Fallback.ID)
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_S, engo.Gl.REPEAT)
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_T, engo.Gl.REPEAT)
 
 	engo.Gl.ActiveTexture(engo.Gl.TEXTURE2)
-	engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, tp.RChannel.Texture())
+	engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, tp.RChannel.ID)
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_S, engo.Gl.REPEAT)
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_T, engo.Gl.REPEAT)
 
 	engo.Gl.ActiveTexture(engo.Gl.TEXTURE3)
-	engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, tp.GChannel.Texture())
+	engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, tp.GChannel.ID)
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_S, engo.Gl.REPEAT)
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_T, engo.Gl.REPEAT)
 
 	engo.Gl.ActiveTexture(engo.Gl.TEXTURE4)
-	engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, tp.BChannel.Texture())
+	engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, tp.BChannel.ID)
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_S, engo.Gl.REPEAT)
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_T, engo.Gl.REPEAT)
 
@@ -304,20 +306,20 @@ func (s *blendmapShader) Draw(ren *RenderComponent, space *SpaceComponent) {
 	if s.lastTexturePack != bm.TexturePack {
 		s.flush()
 		s.bindTexturePack(bm.TexturePack)
-		if s.lastTexture == bm.Texture() {
+		if s.lastTexture == bm.Texture().ID {
 			// if its a different texture we will update the scale with the texture.
 			s.updateScale(bm)
 		}
 		s.lastTexturePack = bm.TexturePack
 	}
 
-	if s.lastTexture != ren.Drawable.Texture() {
+	if s.lastTexture != ren.Drawable.Texture().ID {
 		s.flush()
 
-		engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, ren.Drawable.Texture())
+		engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, ren.Drawable.Texture().ID)
 		s.updateScale(bm)
 
-		s.lastTexture = ren.Drawable.Texture()
+		s.lastTexture = ren.Drawable.Texture().ID
 	} else if s.idx == len(s.vertices) {
 		s.flush()
 	}

@@ -24,7 +24,7 @@ func (renderChangeMessage) Type() string {
 
 // Drawable is that which can be rendered to OpenGL.
 type Drawable interface {
-	Texture() *gl.Texture
+	Texture() *Texture
 	Width() float32
 	Height() float32
 	View() (float32, float32, float32, float32)

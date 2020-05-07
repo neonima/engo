@@ -1,3 +1,5 @@
+//+build !vulkan
+
 package common
 
 import (
@@ -200,10 +202,10 @@ func (s *basicShader) ShouldDraw(rc *RenderComponent, sc *SpaceComponent) bool {
 
 func (s *basicShader) Draw(ren *RenderComponent, space *SpaceComponent) {
 	// If our texture (or any of its properties) has changed or we've reached the end of our buffer, flush before moving on.
-	if s.lastTexture != ren.Drawable.Texture() {
+	if s.lastTexture != ren.Drawable.Texture().ID {
 		s.flush()
-		engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, ren.Drawable.Texture())
-		s.setTexture(ren.Drawable.Texture())
+		engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, ren.Drawable.Texture().ID)
+		s.setTexture(ren.Drawable.Texture().ID)
 	} else if s.idx == len(s.vertices) {
 		s.flush()
 	}

@@ -269,9 +269,9 @@ func (l *textShader) Draw(ren *RenderComponent, space *SpaceComponent) {
 		atlasCache[*txt.Font] = atlas
 	}
 
-	if atlas.Texture != l.lastTexture {
-		engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, atlas.Texture)
-		l.lastTexture = atlas.Texture
+	if atlas.Texture.ID != l.lastTexture {
+		engo.Gl.BindTexture(engo.Gl.TEXTURE_2D, atlas.Texture.ID)
+		l.lastTexture = atlas.Texture.ID
 	}
 
 	engo.Gl.TexParameteri(engo.Gl.TEXTURE_2D, engo.Gl.TEXTURE_WRAP_S, engo.Gl.CLAMP_TO_EDGE)

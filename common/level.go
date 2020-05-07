@@ -3,7 +3,6 @@ package common
 import (
 	"github.com/EngoEngine/engo"
 	"github.com/EngoEngine/engo/math"
-	"github.com/EngoEngine/gl"
 )
 
 const (
@@ -260,8 +259,8 @@ func (t *Tile) Width() float32 {
 }
 
 // Texture returns the tile's Image texture
-func (t *Tile) Texture() *gl.Texture {
-	return t.Image.id
+func (t *Tile) Texture() *Texture {
+	return t.Image
 }
 
 // Close deletes the stored texture of a tile

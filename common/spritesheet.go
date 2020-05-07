@@ -111,7 +111,7 @@ func (s *Spritesheet) Cell(index int) Texture {
 
 	cell := s.cells[index]
 	s.cache[index] = Texture{
-		id:     s.texture,
+		ID:     s.texture,
 		width:  float32(cell.Width),
 		height: float32(cell.Height),
 		viewport: engo.AABB{
